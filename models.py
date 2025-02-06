@@ -1,6 +1,8 @@
 from sqlmodel import SQLModel, Field, Relationship
+from typing import Optional
 from datetime import datetime
 from enum import Enum
+from sqlalchemy import Column, String
 
 
 # Enum for user roles
@@ -28,10 +30,12 @@ class Book(SQLModel, table=True):
     price: float
     is_deleted: bool = Field(default=False)
     is_available: bool = Field(default=True)
+    author_name: Optional[str] = Field(sa_column=Column(String(255), nullable=True))
 
 # Assignment model
 class Assignment(SQLModel, table=True):
     user_id: int = Field(foreign_key="user.user_id", primary_key=True)
     book_id: int = Field(foreign_key="book.book_id", primary_key=True)
     receive_date: datetime
-    submitted_date: datetime
+    submitted_date: datetime= Field(default=None, nullable=True)
+    expiry_date:datetime
